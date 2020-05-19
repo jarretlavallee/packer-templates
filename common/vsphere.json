@@ -1,0 +1,82 @@
+{
+  "variables": {
+    "vsphere_server": "{{env `VSPHERE_SERVER`}}",
+    "vsphere_user": "{{env `VSPHERE_USER`}}",
+    "vsphere_password": "{{env `VSPHERE_PASSWORD`}}",
+    "vsphere_datacenter": "DC",
+    "vsphere_cluster": "Cluster",
+    "vsphere_network": "VM Network",
+    "vsphere_datastore": "vsanDatastore",
+    "vsphere_folder": "Templates",
+    "vsphere_host": "{{env `VSPHERE_HOST`}}",
+    "cpus": "1",
+    "ram": "2048",
+    "disk_size": "32768",
+    "ssh_username":  "root",
+    "ssh_password": "{{env `SSH_PASSWORD`}}",
+    "iso_path": "[local] isos/",
+
+    "template_name": "{{user `os_name`}}-{{user `os_version`}}",
+    "guest_type": null,
+    "iso_name": null,
+    "boot_command": null,
+    "floppy_files": "{{user `os_directory`}}/vars.json",
+    "os_name": null,
+    "os_version": null,
+    "os_directory": "{{template_dir}}/../templates/{{user `os_name`}}/{{user `os_version`}}",
+    "http_directory": "{{user `os_directory`}}",
+    "provision_commands": "hostname"
+ },
+ "sensitive-variables": ["vsphere_password", "ssh_password"],
+  "builders": [
+    {
+      "type": "vsphere-iso",
+
+      "vcenter_server":      "{{user `vsphere_server`}}",
+      "username":            "{{user `vsphere_user`}}",
+      "password":            "{{user `vsphere_password`}}",
+      "insecure_connection": "true",
+      "host":     "{{user `vsphere_host`}}",
+      "datacenter": "{{user `vsphere_datacenter`}}",
+      "cluster": "{{user `vsphere_cluster`}}",
+      "datastore": "{{user `vsphere_datastore`}}",
+      "folder": "{{user `vsphere_folder`}}",
+      "network": "{{user `vsphere_network`}}",
+      "guest_os_type": "{{user `guest_type`}}",
+      "vm_name": "{{user `template_name`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+
+      "CPUs":             "{{user `cpus`}}",
+      "RAM":              "{{user `ram`}}",
+      "RAM_reserve_all": false,
+
+      "disk_controller_type":  "pvscsi",
+      "disk_size":        "{{user `disk_size`}}",
+      "disk_thin_provisioned": true,
+
+      "network_card": "vmxnet3",
+
+      "iso_paths": [
+        "{{user `iso_path`}}{{user `iso_name`}}"
+      ],
+      "floppy_files": [
+        "{{user `floppy_files`}}"
+      ],
+      "boot_command": [ 
+        "{{user `boot_command`}}" 
+      ],
+      "http_directory": "{{user `http_directory`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'packer'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline": [
+        "{{user `provision_commands`}}"
+      ]
+    }
+  ]
+}

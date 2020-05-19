@@ -1,0 +1,8 @@
+{
+  "os_name": "centos",
+  "os_version": "8",
+  "guest_type": "centos8_64Guest",
+  "iso_name": "CentOS-8.1.1911-x86_64-dvd1.iso",
+  "floppy_files": "{{user `os_directory`}}/ks.cfg",
+  "boot_command": "<esc><wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<wait><enter>"
+}
