@@ -4,5 +4,5 @@ This repo provides some templates to use with [packer](https://packer.io). This 
 
 
 ```bash
-packer build --var-file templates/ubuntu/20.04/vars.json common/vsphere.json
+packer build --var-file templates/ubuntu/20.04/vars.pkr.hcl common/vsphere.pkr.hcl
 ```

@@ -1,0 +1,7 @@
+os_name = "centos"
+os_version = "7"
+guest_type = "centos7_64Guest"
+iso_name = "CentOS-7-x86_64-Minimal-1908.iso"
+floppy_files = "ks.cfg"
+provision_commands = "yum install -y cloud-init epel-release; yum install -y python-pip; curl -sSL https://raw.githubusercontent.com/vmware/cloud-init-vmware-guestinfo/master/install.sh | sh -"
+boot_command = "<esc><wait>linux ks=hd:fd0:/ks.cfg<enter>"
